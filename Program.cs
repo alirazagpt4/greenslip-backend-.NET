@@ -5,6 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// Add Controllers
+builder.Services.AddControllers();
+
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseMySql(
@@ -32,5 +35,6 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+app.MapControllers();
 
 app.Run();

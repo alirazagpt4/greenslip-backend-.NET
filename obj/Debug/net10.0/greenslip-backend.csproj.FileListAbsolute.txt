@@ -185,3 +185,4 @@ C:\Users\Admin\Desktop\greenslip-backend\bin\Debug\net10.0\ru\Microsoft.CodeAnal
 C:\Users\Admin\Desktop\greenslip-backend\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\Admin\Desktop\greenslip-backend\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\Admin\Desktop\greenslip-backend\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Admin\Desktop\greenslip-backend\obj\Debug\net10.0\greenslip-backend.sourcelink.json
