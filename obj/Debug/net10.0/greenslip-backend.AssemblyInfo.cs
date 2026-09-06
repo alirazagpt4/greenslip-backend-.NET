@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("greenslip-backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+edefc1e4fc3f25ad9ec9316120e7fd24a827db80")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ff77bbcfb7a87dfa15020e2e61abd200ff35366")]
 [assembly: System.Reflection.AssemblyProductAttribute("greenslip-backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("greenslip-backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

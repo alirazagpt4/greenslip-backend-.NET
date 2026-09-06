@@ -21,6 +21,7 @@ public class Invoice
     public decimal PosFee {get;  set;} = 1.00m;
     public decimal PayableAmount {get;  set;}
     public string  PaymentMode {get;  set;} = "Cash";
+    public List<InvoiceItem> Items {get; set;} = new List<InvoiceItem>();
     public DateTime CreatedAt {get;  set;} = DateTime.Now;
 
 
