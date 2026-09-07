@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using greenslip_backend.Data;
 using greenslip_backend.DTOs;
 using greenslip_backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace greenslip_backend.Controllers;
 
@@ -16,6 +17,9 @@ public class ReceiptsController : ControllerBase
     {
         _context = context;
     }
+
+
+    // Invoice Post Req
 
     [HttpPost("ingest")]
     public IActionResult Ingest([FromBody] InvoiceIngestDto dto)
@@ -39,6 +43,10 @@ public class ReceiptsController : ControllerBase
           CustomerName = dto.BillTo,
           CustomerPhone = dto.CustomerPhone,
           PaymentMode = dto.PaymentMode,
+          ShopName = dto.ShopName,
+          ShopAddress = dto.ShopAddress,
+          ShopPhone = dto.ShopPhone,
+          CashierName = dto.CashierName,
           TotalAmount = dto.Summary.Total,
           Discount = dto.Summary.Discount,
           GstAmount = dto.Summary.Gst,
@@ -66,4 +74,23 @@ public class ReceiptsController : ControllerBase
 
         return Ok( new { success = true , duplicate = false , receiptHash = receiptHash , invoiceNo = invoice.InvoiceNo , payableAmount = invoice.PayableAmount});
     }
+
+
+    // Invoice Get Request
+
+    [HttpGet("{hash}")]
+    public IActionResult GetReceipt(string hash)
+    {
+        var invoice = _context.Invoices
+                      .Include(i => i.Items)
+                      .FirstOrDefault(i => i.ReceiptHash == hash);
+        
+        if(invoice == null)
+        {
+            return NotFound(new {success = false , error = "Receipt Not Found"});
+        }
+
+        return Ok( new {success = true , invoice = invoice });
+    }
+
 }
