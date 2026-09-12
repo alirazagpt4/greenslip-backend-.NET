@@ -93,4 +93,47 @@ public class ReceiptsController : ControllerBase
         return Ok( new {success = true , invoice = invoice });
     }
 
+
+    // Feedback Req
+    [HttpPost("{hash}/feedback")]
+    public IActionResult SubmitFeedback(string hash, [FromBody] FeedBackDto dto)
+    {
+        var invoice = _context.Invoices.FirstOrDefault(i => i.ReceiptHash == hash);
+
+        if (invoice == null)
+        {
+            return NotFound(new { success = false , error = "Invoice Not Found"});
+        }
+
+        bool isValidRating = Enum.TryParse<Rating>(dto.Rating , true , out Rating parsedRating);
+
+        if (!isValidRating)
+        {
+            return BadRequest(new { success = false , error = "Rating must be one of : worst , not_good , fine , good , best"});
+        }
+
+
+        var existingFeedback = _context.Feedbacks.FirstOrDefault(f => f.InvoiceId == invoice.Id);
+
+        if(existingFeedback != null)
+        {
+            return Conflict(new { success = false , error = "Feedback Already Submitted for this receipt"});
+        }
+
+        var feedback = new Feedback
+        {
+            InvoiceId = invoice.Id,
+            InvoiceNo = invoice.InvoiceNo,
+            ShopName  = invoice.ShopName,
+            Rating    = parsedRating,
+            Comment   = dto.Comment
+        };
+
+        _context.Feedbacks.Add(feedback);
+        _context.SaveChanges();
+
+        return Ok(new {success = true , feedback = new { rating = feedback.Rating.ToString() , comment = feedback.Comment, submittedAt = feedback.SubmittedAt }});
+
+    }
+
 }
