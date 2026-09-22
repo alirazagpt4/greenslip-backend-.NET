@@ -14,6 +14,8 @@ public class AppDbContext : DbContext
     public DbSet<InvoiceItem> InvoiceItems {get; set;}
     public DbSet<Feedback> Feedbacks {get; set;}
     public DbSet<CustomerSegment> CustomerSegments {get; set;}
-
+    public DbSet<Company> Companies {get; set;}
+    public DbSet<Store> Stores {get; set;}
+    public DbSet<Admin> Admins {get; set;}
     
 }

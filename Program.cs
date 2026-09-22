@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using greenslip_backend.Data;
+
+// Temporary - password hash generate
+Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin123"));
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
