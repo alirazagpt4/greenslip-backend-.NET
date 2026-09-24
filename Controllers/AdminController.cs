@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using greenslip_backend.Data;
 using greenslip_backend.DTOs;
 using BCrypt.Net;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace greenslip_backend.Controllers;
@@ -65,5 +67,38 @@ public class AdminController : ControllerBase
 
         
         return Ok(new {success = true , token = tokenString});
+    }
+
+    //  Test Protect Route
+    [Authorize]
+    [HttpGet("test-protected")]
+    public IActionResult TestProtected()
+    {
+        return Ok(new {success=true , message = "You Access the EndPoint SuccessFully!"});
+    }
+
+    // Admin Invoices List Feature
+    [Authorize]
+    [HttpGet("invoices")]
+    public IActionResult GetInvoices()
+    {
+        // return Ok(new {success = true , message="Invoices Come Here"});
+        var companyIdClaim = User.FindFirst("CompanyId")?.Value;
+        var isSuperAdminClaim = User.FindFirst("IsSuperAdmin")?.Value;
+
+        bool isSuperAdmin = isSuperAdminClaim == "True";
+
+        var query = _context.Invoices.Include(i => i.Items).AsQueryable();
+
+        if(!isSuperAdmin)
+        {
+            int companyId = int.Parse(companyIdClaim ?? "0");
+            query = query.Where(i => i.Store.CompanyId == companyId);
+        }
+
+        var invoices = query.ToList();
+
+        // return Ok(new { success = true , companyId = companyIdClaim , isSuperAdmin = isSuperAdminClaim});
+         return Ok(new { success = true , count = invoices.Count , invoices = invoices});
     }
 }

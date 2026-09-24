@@ -8,6 +8,7 @@ public class Invoice
     public string? FbrInvoiceNo {get; set;} = string.Empty;
     public string IdempotencyKey {get; set;} = string.Empty;
     public int StoreId {get;  set;}
+    public Store? Store {get; set;}
     public string? ShopName {get;  set;}
     public string? ShopAddress {get;  set;}
     public string? ShopPhone {get;  set;}

@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using greenslip_backend.Data;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 // Temporary - password hash generate
-Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin123"));
+// Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin123"));
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,6 +24,22 @@ options.UseMySql(
 )
 );
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+                )
+            };
+        });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +54,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
